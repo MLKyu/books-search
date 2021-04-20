@@ -1,20 +1,21 @@
-package com.alansoft.kapay_cote.ui.main
+package com.alansoft.kapay_cote.ui.search
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.alansoft.kapay_cote.R
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainFragment : Fragment() {
-
+@AndroidEntryPoint
+class SearchFragment : Fragment() {
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = SearchFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: SearchViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -23,7 +24,7 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
         // TODO: Use the ViewModel
     }
 
