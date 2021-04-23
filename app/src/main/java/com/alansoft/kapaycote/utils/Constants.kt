@@ -1,4 +1,4 @@
-package com.alansoft.kapay_cote.utils
+package com.alansoft.kapaycote.utils
 
 
 /**

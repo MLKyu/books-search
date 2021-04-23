@@ -1,4 +1,4 @@
-package com.alansoft.kapay_cote.ui.detail
+package com.alansoft.kapaycote.ui.detail
 
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint

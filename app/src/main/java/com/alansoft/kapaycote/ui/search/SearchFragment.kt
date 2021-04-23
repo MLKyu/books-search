@@ -1,4 +1,4 @@
-package com.alansoft.kapay_cote.ui.search
+package com.alansoft.kapaycote.ui.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.alansoft.kapay_cote.R
+import com.alansoft.kapaycote.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,7 +1,7 @@
-package com.alansoft.kapay_cote.data.api
+package com.alansoft.kapaycote.data.api
 
-import com.alansoft.kapay_cote.data.response.BooksSearchResponse
-import com.alansoft.kapay_cote.utils.SearchSortType
+import com.alansoft.kapaycote.data.response.BooksSearchResponse
+import com.alansoft.kapaycote.utils.SearchSortType
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

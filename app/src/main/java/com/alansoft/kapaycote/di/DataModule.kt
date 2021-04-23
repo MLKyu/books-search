@@ -1,6 +1,6 @@
-package com.alansoft.kapay_cote.di
+package com.alansoft.kapaycote.di
 
-import com.alansoft.kapay_cote.data.api.ApiService
+import com.alansoft.kapaycote.data.api.ApiService
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides

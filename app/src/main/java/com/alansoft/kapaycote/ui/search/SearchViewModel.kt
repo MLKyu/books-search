@@ -1,4 +1,4 @@
-package com.alansoft.kapay_cote.ui.search
+package com.alansoft.kapaycote.ui.search
 
 import androidx.lifecycle.ViewModel
 

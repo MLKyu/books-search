@@ -1,4 +1,4 @@
-package com.alansoft.kapay_cote.data.response
+package com.alansoft.kapaycote.data.response
 
 import com.google.gson.annotations.SerializedName
 

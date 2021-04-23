@@ -1,4 +1,4 @@
-package com.alansoft.kapay_cote.app
+package com.alansoft.kapaycote.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

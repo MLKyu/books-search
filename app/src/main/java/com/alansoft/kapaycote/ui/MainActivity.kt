@@ -1,9 +1,9 @@
-package com.alansoft.kapay_cote.ui
+package com.alansoft.kapaycote.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.alansoft.kapay_cote.R
-import com.alansoft.kapay_cote.ui.search.SearchFragment
+import com.alansoft.kapaycote.R
+import com.alansoft.kapaycote.ui.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
