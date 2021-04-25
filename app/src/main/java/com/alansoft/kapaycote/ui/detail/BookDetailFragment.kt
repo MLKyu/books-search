@@ -9,8 +9,8 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 
 @AndroidEntryPoint
-class DetailFragment : Fragment() {
+class BookDetailFragment : Fragment() {
     companion object {
-        val instance by lazy { DetailFragment() }
+        val instance by lazy { BookDetailFragment() }
     }
 }

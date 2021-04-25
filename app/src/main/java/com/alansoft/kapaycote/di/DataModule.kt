@@ -1,6 +1,6 @@
 package com.alansoft.kapaycote.di
 
-import com.alansoft.kapaycote.data.api.ApiService
+import com.alansoft.kapaycote.data.api.SearchApi
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -20,46 +20,44 @@ import javax.inject.Singleton
  */
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
-    companion object {
-        @Singleton
-        @Provides
-        fun providesOkHttpClient(): OkHttpClient {
-            val chainInterceptor = { chain: Interceptor.Chain ->
-                chain.proceed(
-                    chain.request().newBuilder()
-                        .header("Content-Type", "application/json")
-                        .header("Accept", "application/json")
-                        .header("Authorization", "KakaoAK 0e4079250a010fd99eb6e56583f42202")
-                        .build()
-                )
-            }
-            return OkHttpClient.Builder()
-                .addInterceptor(chainInterceptor)
-                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .readTimeout(120, TimeUnit.SECONDS)
-                .connectTimeout(120, TimeUnit.SECONDS)
-                .build()
+object NetworkModule {
+    @Singleton
+    @Provides
+    fun providesOkHttpClient(): OkHttpClient {
+        val chainInterceptor = { chain: Interceptor.Chain ->
+            chain.proceed(
+                chain.request().newBuilder()
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .header("Authorization", "KakaoAK 0e4079250a010fd99eb6e56583f42202")
+                    .build()
+            )
         }
-
-        @Singleton
-        @Provides
-        fun providesRetrofitBuilder(client: OkHttpClient): Retrofit =
-            Retrofit.Builder()
-                .baseUrl("https://dapi.kakao.com/")
-                .addConverterFactory(
-                    GsonConverterFactory.create(
-                        GsonBuilder()
-//                            .setDateFormat("")
-                            .create()
-                    )
-                )
-                .client(client)
-                .build()
-
-        @Singleton
-        @Provides
-        fun providesKakaoSearchApi(retrofit: Retrofit): ApiService =
-            retrofit.create(ApiService::class.java)
+        return OkHttpClient.Builder()
+            .addInterceptor(chainInterceptor)
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .readTimeout(120, TimeUnit.SECONDS)
+            .connectTimeout(120, TimeUnit.SECONDS)
+            .build()
     }
+
+    @Singleton
+    @Provides
+    fun providesRetrofitBuilder(client: OkHttpClient): Retrofit =
+        Retrofit.Builder()
+            .baseUrl("https://dapi.kakao.com/")
+            .addConverterFactory(
+                GsonConverterFactory.create(
+                    GsonBuilder()
+//                            .setDateFormat("")
+                        .create()
+                )
+            )
+            .client(client)
+            .build()
+
+    @Singleton
+    @Provides
+    fun providesKakaoSearchApi(retrofit: Retrofit): SearchApi =
+        retrofit.create(SearchApi::class.java)
 }

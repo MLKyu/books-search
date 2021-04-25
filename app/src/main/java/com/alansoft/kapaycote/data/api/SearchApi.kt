@@ -10,7 +10,7 @@ import retrofit2.http.Query
  * Created by LEE MIN KYU on 2021/04/20
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
-interface ApiService {
+interface SearchApi {
 
     /**
      * query	String	검색을 원하는 질의어	O
@@ -25,7 +25,8 @@ interface ApiService {
         @Query("query") query: String,
         @Query("sort") sort: SearchSortType,
         @Query("page") page: Int,
-        @Query("size") size: Int,
-        @Query("target") target: String
+        @Query("size") size: Int
+//        ,
+//        @Query("target") target: String
     ): Response<BooksSearchResponse>
 }
