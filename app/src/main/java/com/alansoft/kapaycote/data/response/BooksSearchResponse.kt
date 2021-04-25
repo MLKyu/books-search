@@ -1,6 +1,8 @@
 package com.alansoft.kapaycote.data.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 
 data class BooksSearchResponse(
@@ -36,6 +38,7 @@ thumbnail	String	도서 표지 미리보기 URL
 status	String	도서 판매 상태 정보 (정상, 품절, 절판 등)
 상황에 따라 변동 가능성이 있으므로 문자열 처리 지양, 단순 노출 요소로 활용 권장
  */
+@Parcelize
 data class Document(
     val title: String?,
     val contents: String?,
@@ -50,4 +53,4 @@ data class Document(
     val salePrice: Int,
     val thumbnail: String?,
     val status: String?
-)
+) : Parcelable

@@ -20,16 +20,14 @@ import javax.inject.Singleton
  */
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object DataModule {
     @Singleton
     @Provides
     fun providesOkHttpClient(): OkHttpClient {
         val chainInterceptor = { chain: Interceptor.Chain ->
             chain.proceed(
                 chain.request().newBuilder()
-                    .header("Content-Type", "application/json")
-                    .header("Accept", "application/json")
-                    .header("Authorization", "KakaoAK 0e4079250a010fd99eb6e56583f42202")
+                    .header("Authorization", "KakaoAK 240c100923000a471fcd6d5bff20dec2")
                     .build()
             )
         }

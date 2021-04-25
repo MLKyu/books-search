@@ -11,7 +11,7 @@ enum class SearchSortType {
 }
 
 const val FIRST_PAGE = 1
-const val PAGE_SIZE = 20
+const val PAGE_SIZE = 50
 const val REQUEST_KEY = "requestKey"
 const val BUNDLE_QUERY = "query"
 
@@ -24,3 +24,5 @@ enum class ViewType {
     IMAGE,
     VCLIP
 }
+
+const val DEBOUNCE_MILLIS = 700L

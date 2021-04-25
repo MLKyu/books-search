@@ -28,5 +28,5 @@ interface SearchApi {
         @Query("size") size: Int
 //        ,
 //        @Query("target") target: String
-    ): Response<BooksSearchResponse>
+    ): BooksSearchResponse
 }

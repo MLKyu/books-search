@@ -1,7 +1,10 @@
 package com.alansoft.kapaycote.utils
 
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import com.alansoft.kapaycote.ui.search.SearchViewModel
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 /**
  * Created by LEE MIN KYU on 2021/04/25
@@ -26,4 +29,12 @@ fun SearchView.setOnQueryListener(delegate: SearchViewModel.Delegate) {
             return false
         }
     })
+}
+
+fun ImageView.loadWithThumbnail(uri: String?, sizeMultiplier: Float = 0.25f) {
+    Glide.with(context)
+        .load(uri)
+        .thumbnail(sizeMultiplier)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(this)
 }

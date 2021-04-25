@@ -1,12 +1,14 @@
 package com.alansoft.kapaycote.repository
 
-import androidx.lifecycle.liveData
-import com.alansoft.kapaycote.data.Resource
-import com.alansoft.kapaycote.data.SearchDataSource
+import com.alansoft.kapaycote.data.Result
+import com.alansoft.kapaycote.data.SearchRemoteDataSource
 import com.alansoft.kapaycote.data.response.BooksSearchResponse
 import com.alansoft.kapaycote.utils.FIRST_PAGE
 import com.alansoft.kapaycote.utils.PAGE_SIZE
 import com.alansoft.kapaycote.utils.SearchSortType
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -14,30 +16,19 @@ import javax.inject.Inject
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
 class SearchRepository @Inject constructor(
-    private val searchDataSource: SearchDataSource
+    private val searchRemoteDataSource: SearchRemoteDataSource
 ) {
-
-    fun getSearchBooks(query: String, page: Int = FIRST_PAGE) =
-        liveData<Resource<BooksSearchResponse>> {
-            emit(Resource.loading())
-            val response = searchDataSource.getSearchBooks(
-                query, SearchSortType.RECENCY, page, PAGE_SIZE
-            )
-
-            when (response.status){
-                Resource.Status.SUCCESS -> {
-//                    responseStatus.data?.let {
-//                        emit(Resource.success(it))
-//                    }
-                }
-                Resource.Status.ERROR -> {
-//                    responseStatus.message?.let {
-//                        emit(Resource.error(it))
-//                    }
-                }
-                else -> {
-                    // ignore
-                }
-            }
-        }
+    fun getSearchBooks(
+        query: String,
+        page: Int = FIRST_PAGE
+    ): Flow<Result<BooksSearchResponse>> = flow {
+        emit(Result.loading())
+        val images = searchRemoteDataSource.getSearchBooks(
+            query, SearchSortType.RECENCY, page,
+            PAGE_SIZE
+        )
+        emit(Result.success(images))
+    }.catch { e ->
+        emit(Result.error(e))
+    }
 }
