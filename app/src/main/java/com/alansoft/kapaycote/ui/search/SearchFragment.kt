@@ -3,9 +3,8 @@ package com.alansoft.kapaycote.ui.search
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,52 +13,54 @@ import com.alansoft.kapaycote.data.Result
 import com.alansoft.kapaycote.data.response.BooksSearchResponse
 import com.alansoft.kapaycote.data.response.Document
 import com.alansoft.kapaycote.databinding.SearchFragmentBinding
+import com.alansoft.kapaycote.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
-    private lateinit var binding: SearchFragmentBinding
+class SearchFragment : BaseFragment<SearchFragmentBinding>() {
+
     private val viewModel: SearchViewModel by viewModels()
     private val adapter: SearchListAdapter = SearchListAdapter(this::onItemClicked)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.search_fragment, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
-    }
+    override fun getLayoutId(): Int = R.layout.search_fragment
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_items, menu)
-        setSearchView(menu)
+        setSearchMenu(menu)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        setObserver()
-        setRecyclerView()
+        setRecyclerAdapter()
+        setViewModel()
     }
 
-    private fun setObserver() {
-        viewModel.results.observe(viewLifecycleOwner) { result ->
-            when (result) {
+    private fun setViewModel() {
+        with(binding) {
+            viewmodel = SearchFragment@viewModel
+        }
+        setSubscribe()
+    }
+
+    private fun setSubscribe() {
+        viewModel.results.observe(viewLifecycleOwner, Observer {
+            when(it) {
                 is Result.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
+                    showProgressBar()
                 }
                 is Result.Success -> {
-                    showRecyclerView(result.data)
+                    showRecyclerView()
+                    setResultData(it.data)
                 }
                 is Result.Empty -> {
                     showErrorView("검색 결과가 없습니다.")
                 }
                 is Result.Error -> {
-                    val message = if (result.isNetworkError) {
-                        result.exception.message
+                    val message = if (it.isNetworkError) {
+                        it.exception.message
                     } else {
-                        result.exception.message
+                        it.exception.message
                     }
                     showErrorView(message)
                 }
@@ -67,10 +68,11 @@ class SearchFragment : Fragment() {
                     // nothing
                 }
             }
-        }
+        })
     }
 
-    private fun setRecyclerView() {
+
+    private fun setRecyclerAdapter() {
         binding.recyclerView.apply {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -85,14 +87,7 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun showRecyclerView(data: BooksSearchResponse) {
-        with(binding) {
-            // Stop refreshing state
-            recyclerView.visibility = View.VISIBLE
-            errorTv.visibility = View.GONE
-            progressBar.visibility = View.GONE
-        }
-
+    private fun setResultData(data: BooksSearchResponse) {
         if (data.meta?.page ?: -1 > 1) {
             val list = ArrayList<Document?>()
             list.addAll(adapter.currentList)
@@ -105,19 +100,25 @@ class SearchFragment : Fragment() {
         }
     }
 
+    private fun showRecyclerView() {
+        with(binding) {
+            recyclerView.visibility = View.VISIBLE
+            errorTv.visibility = View.GONE
+            progressBar.visibility = View.GONE
+        }
+    }
+
     private fun showErrorView(message: String?) {
         with(binding) {
             recyclerView.visibility = View.INVISIBLE
             errorTv.visibility = View.VISIBLE
             errorTv.text = message
-
             progressBar.visibility = View.GONE
         }
-
         adapter.submitList(emptyList())
     }
 
-    private fun setSearchView(menu: Menu) {
+    private fun setSearchMenu(menu: Menu) {
         val searchItem = menu.findItem(R.id.action_search)
         (searchItem.actionView as SearchView).apply {
             queryHint = "책 이름을 입력하세요"
@@ -138,4 +139,14 @@ class SearchFragment : Fragment() {
         val direction = SearchFragmentDirections.actionListFragmentToDetailFragment(item)
         findNavController().navigate(direction)
     }
+
+
+    private fun showProgressBar() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        binding.progressBar.visibility = View.GONE
+    }
+
 }

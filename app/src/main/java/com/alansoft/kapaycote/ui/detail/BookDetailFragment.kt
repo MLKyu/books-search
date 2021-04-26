@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.alansoft.kapaycote.R
 import com.alansoft.kapaycote.data.response.Document
 import com.alansoft.kapaycote.databinding.BookDetailFragmentBinding
+import com.alansoft.kapaycote.ui.base.BaseFragment
 import com.alansoft.kapaycote.utils.loadWithThumbnail
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,11 +19,11 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 
 @AndroidEntryPoint
-class BookDetailFragment : Fragment() {
-    private lateinit var binding: BookDetailFragmentBinding
+class BookDetailFragment : BaseFragment<BookDetailFragmentBinding>() {
     private val viewModel: BookDetailViewModel by viewModels()
     private val args: BookDetailFragmentArgs by navArgs()
 
+    override fun getLayoutId(): Int = R.layout.book_detail_fragment
     private var like = false
 
     override fun onCreateView(
@@ -77,4 +78,6 @@ class BookDetailFragment : Fragment() {
             true
         }
     }
+
+
 }
