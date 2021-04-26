@@ -5,14 +5,12 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.alansoft.kapaycote.R
 import com.alansoft.kapaycote.data.response.Document
 import com.alansoft.kapaycote.databinding.BookDetailFragmentBinding
 import com.alansoft.kapaycote.ui.base.BaseFragment
-import com.alansoft.kapaycote.utils.loadWithThumbnail
 import com.alansoft.kapaycote.utils.setNavigationResult
 import com.alansoft.kapaycote.utils.setSelector
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,12 +47,7 @@ class BookDetailFragment : BaseFragment<BookDetailFragmentBinding>() {
     private fun bindView(document: Document) {
         like = document.like
         with(binding) {
-            bookImg.loadWithThumbnail(document.thumbnail)
-            bookDate.text = document.datetime
-            bookDes.text = document.contents
-            bookName.text = document.title
-            bookPrice.text = document.salePrice.toString()
-            bookPublisher.text = document.publisher
+            data = document
             progressBar.visibility = View.GONE
         }
     }

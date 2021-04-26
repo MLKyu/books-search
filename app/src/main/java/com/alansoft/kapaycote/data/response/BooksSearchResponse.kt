@@ -3,6 +3,7 @@ package com.alansoft.kapaycote.data.response
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import java.util.*
 
 /**
  * Created by LEE MIN KYU on 2021/04/20
@@ -42,7 +43,7 @@ data class Document(
     val contents: String?,
     val url: String?,
     val isbn: String?,
-    val datetime: String?,
+    val datetime: Date?,
     val authors: List<String?>?,
     val publisher: String?,
     val translators: List<String?>?,

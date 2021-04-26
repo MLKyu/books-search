@@ -1,5 +1,7 @@
 package com.alansoft.kapaycote.di
 
+import com.alansoft.kapaycote.BuildConfig
+import com.alansoft.kapaycote.data.adapter.DateTypeAdapter
 import com.alansoft.kapaycote.data.api.SearchApi
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -11,6 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -27,7 +30,7 @@ object DataModule {
         val chainInterceptor = { chain: Interceptor.Chain ->
             chain.proceed(
                 chain.request().newBuilder()
-                    .header("Authorization", "KakaoAK 240c100923000a471fcd6d5bff20dec2")
+                    .header("Authorization", BuildConfig.ApiKey)
                     .build()
             )
         }
@@ -47,7 +50,7 @@ object DataModule {
             .addConverterFactory(
                 GsonConverterFactory.create(
                     GsonBuilder()
-//                            .setDateFormat("")
+                        .registerTypeAdapter(Date::class.java, DateTypeAdapter())
                         .create()
                 )
             )

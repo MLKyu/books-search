@@ -10,6 +10,8 @@ import com.alansoft.kapaycote.utils.SearchSortType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.retry
+import java.io.IOException
 import javax.inject.Inject
 
 /**
@@ -29,7 +31,7 @@ class SearchRepository @Inject constructor(
         val response: BooksSearchResponse
 
         emit(if (cache.isExistAndFresh(query, page)) {
-            response = cache.getQueryResponse(query, page)
+            response = cache.getSearchResponse(query, page)
             Result.success(response)
         } else {
             response = remote.getSearchBooks(
@@ -41,11 +43,13 @@ class SearchRepository @Inject constructor(
                 Result.empty()
             } else {
                 Result.pushAndSuccess(response) {
-                    cache.pushQueryResponse(query, page, it)
+                    cache.pushSearchResponse(query, page, it)
                     it.fromData(query, page)
                 }
             }
         })
+    }.retry(2) { cause ->
+        cause is IOException
     }.catch { e ->
         emit(Result.error(e))
     }

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,18 +37,11 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         setRecyclerAdapter()
-        setViewModel()
-    }
-
-    private fun setViewModel() {
-        with(binding) {
-            viewmodel = SearchFragment@ viewModel
-        }
         setSubscribe()
     }
 
     private fun setSubscribe() {
-        viewModel.results.observe(viewLifecycleOwner, Observer {
+        viewModel.results.observe(viewLifecycleOwner, {
             when (it) {
                 is Result.Loading -> {
                     showProgressBar()
@@ -63,7 +55,7 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>() {
                 }
                 is Result.Error -> {
                     val message = if (it.isNetworkError) {
-                        it.exception.message
+                        "네트워크 연결을 확인 하세요."
                     } else {
                         it.exception.message
                     }
@@ -75,7 +67,7 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>() {
             }
         })
 
-        getNavigationResult<Document>().observe(viewLifecycleOwner) { result ->
+        getNavigationResult<Document>(R.id.searchFragment).observe(viewLifecycleOwner) { result ->
             adapter.currentList[result.position].setLike(result.like)
             adapter.notifyItemChanged(result.position)
         }
@@ -83,7 +75,7 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>() {
 
 
     private fun setRecyclerAdapter() {
-        binding.recyclerView.apply {
+        binding.recyclerView.run {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
@@ -114,7 +106,7 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>() {
         with(binding) {
             recyclerView.visibility = View.VISIBLE
             errorTv.visibility = View.GONE
-            progressBar.visibility = View.GONE
+            hideProgressBar()
         }
     }
 
@@ -123,14 +115,14 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>() {
             recyclerView.visibility = View.INVISIBLE
             errorTv.visibility = View.VISIBLE
             errorTv.text = message
-            progressBar.visibility = View.GONE
+            hideProgressBar()
         }
         adapter.submitList(emptyList())
     }
 
     private fun setSearchMenu(menu: Menu) {
         val searchItem = menu.findItem(R.id.action_search)
-        (searchItem.actionView as SearchView).apply {
+        (searchItem.actionView as SearchView).run {
             queryHint = "책 이름을 입력하세요"
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {

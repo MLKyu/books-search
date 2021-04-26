@@ -13,14 +13,14 @@ class SearchCacheDataSource
 
     private val cached: LinkedList<Data> = LinkedList()
 
-    fun pushQueryResponse(query: String, page: Int, queryResponse: BooksSearchResponse) {
-        if (this.cached.size >= 5) {
-            this.cached.removeFirst()
+    fun pushSearchResponse(query: String, page: Int, queryResponse: BooksSearchResponse) {
+        if (cached.size >= 5) {
+            cached.removeFirst()
         }
         cached.addLast(Data(query, page, queryResponse))
     }
 
-    fun getQueryResponse(query: String, page: Int): BooksSearchResponse {
+    fun getSearchResponse(query: String, page: Int): BooksSearchResponse {
         return cached.first { it.query == query && it.page == page }.queryResponse
     }
 
@@ -40,7 +40,7 @@ class SearchCacheDataSource
         if (cached[index].isFresh()) {
             return true
         }
-        this.cached.removeAt(index)
+        cached.removeAt(index)
         return false
     }
 
@@ -54,13 +54,11 @@ class SearchCacheDataSource
 
         fun isFresh(): Boolean {
             val current = System.currentTimeMillis()
-            return (current - this.createdAt) < timeout
+            return (current - createdAt) < timeout
         }
     }
 
-
     companion object {
-        private const val timeout: Long = 10 * 60 * 1000 // 10분
+        private const val timeout: Long = 1 * 60 * 1000 // 1분
     }
-
 }
