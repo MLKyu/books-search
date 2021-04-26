@@ -1,9 +1,7 @@
 package com.alansoft.kapaycote.ui.detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,17 +23,26 @@ class BookDetailFragment : Fragment() {
     private val viewModel: BookDetailViewModel by viewModels()
     private val args: BookDetailFragmentArgs by navArgs()
 
+    private var like = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.book_detail_fragment, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.detail_menu_item, menu)
+        setSearchView(menu)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         bindView(args.document)
     }
 
@@ -50,6 +57,24 @@ class BookDetailFragment : Fragment() {
             //            binding.bookLike
 
             progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun setSearchView(menu: Menu) {
+        val likeItem = menu.findItem(R.id.action_like)
+        if (like) {
+            likeItem.setIcon(R.drawable.ic_like_active)
+        } else {
+            likeItem.setIcon(R.drawable.ic_like_inactive)
+        }
+        likeItem.setOnMenuItemClickListener {
+            like = !like
+            if (like) {
+                it.setIcon(R.drawable.ic_like_active)
+            } else {
+                it.setIcon(R.drawable.ic_like_inactive)
+            }
+            true
         }
     }
 }

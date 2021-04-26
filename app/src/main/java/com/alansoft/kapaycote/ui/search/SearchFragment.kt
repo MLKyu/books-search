@@ -38,7 +38,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setToolbar()
+        setHasOptionsMenu(true)
         setObserver()
         setRecyclerView()
     }
@@ -108,17 +108,13 @@ class SearchFragment : Fragment() {
     private fun showErrorView(message: String?) {
         with(binding) {
             recyclerView.visibility = View.INVISIBLE
+            errorTv.visibility = View.VISIBLE
             errorTv.text = message
 
             progressBar.visibility = View.GONE
         }
 
         adapter.submitList(emptyList())
-    }
-
-
-    private fun setToolbar() {
-        setHasOptionsMenu(true)
     }
 
     private fun setSearchView(menu: Menu) {
