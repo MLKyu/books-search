@@ -53,16 +53,15 @@ class SearchFragment : Fragment() {
                     showRecyclerView(result.data)
                 }
                 is Result.Empty -> {
-//                    val message = result
-//                    showEmptyView(message
+                    showEmptyView("검색 결과가 없습니다.")
                 }
                 is Result.Error -> {
-//                    val message = if (result.isNetworkError) {
-//                        getString(R.string.no_internet)
-//                    } else {
-//                        getString(R.string.no_image_show)
-//                    }
-//                    showEmptyView(message)
+                    val message = if (result.isNetworkError) {
+                        result.exception.message
+                    } else {
+                        result.exception.message
+                    }
+                    showEmptyView(message)
                 }
                 else -> {
                     // nothing
@@ -89,9 +88,8 @@ class SearchFragment : Fragment() {
     private fun showRecyclerView(data: BooksSearchResponse) {
         with(binding) {
             // Stop refreshing state
-//            swipeRefreshLayout.isRefreshing = false
-//            imagesRecyclerView.visibility = View.VISIBLE
-//            noDataGroup.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            noData.visibility = View.GONE
             progressBar.visibility = View.GONE
         }
 
@@ -105,18 +103,12 @@ class SearchFragment : Fragment() {
         } else {
             adapter.submitList(data.documents)
         }
-
     }
 
-    private fun showEmptyView(message: String) {
+    private fun showEmptyView(message: String?) {
         with(binding) {
-            // Stop refreshing state
-//            swipeRefreshLayout.isRefreshing = false
-//
-//            imagesRecyclerView.visibility = View.INVISIBLE
-//            noDataGroup.visibility = View.VISIBLE
-//
-//            noDataText.text = message
+            recyclerView.visibility = View.INVISIBLE
+            noData.text = message
 
             progressBar.visibility = View.GONE
         }

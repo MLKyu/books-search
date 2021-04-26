@@ -28,19 +28,24 @@ class SearchRepository @Inject constructor(
 
         val response: BooksSearchResponse
 
-        if (cache.isExistAndFresh(query, page)) {
+        emit(if (cache.isExistAndFresh(query, page)) {
             response = cache.getQueryResponse(query, page)
-            emit(Result.success(response))
+            Result.success(response)
         } else {
             response = remote.getSearchBooks(
                 query, SearchSortType.RECENCY, page,
                 PAGE_SIZE
             )
-            emit(Result.pushAndSuccess(response) {
-                cache.pushQueryResponse(query, page, it)
-                it.fromData(query, page)
-            })
-        }
+
+            if (response.documents.isNullOrEmpty()) {
+                Result.empty()
+            } else {
+                Result.pushAndSuccess(response) {
+                    cache.pushQueryResponse(query, page, it)
+                    it.fromData(query, page)
+                }
+            }
+        })
     }.catch { e ->
         emit(Result.error(e))
     }

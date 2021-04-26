@@ -8,5 +8,4 @@ import dagger.hilt.android.HiltAndroidApp
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
 @HiltAndroidApp
-class KaPayCoTeApplication : Application() {
-}
+class KaPayCoTeApplication : Application()
