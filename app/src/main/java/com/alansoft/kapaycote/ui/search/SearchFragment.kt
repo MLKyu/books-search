@@ -76,6 +76,9 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>() {
 
     private fun setRecyclerAdapter() {
         binding.recyclerView.run {
+            setItemViewCacheSize(0)
+            setHasFixedSize(true)
+            clearOnScrollListeners()
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager

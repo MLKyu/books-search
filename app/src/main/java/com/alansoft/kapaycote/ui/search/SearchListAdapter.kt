@@ -15,7 +15,6 @@ import com.alansoft.kapaycote.ui.base.BaseListAdapter
 class SearchListAdapter(
     private val itemCallback: ((Pair<Document, Int>) -> Unit)?
 ) : BaseListAdapter<Document>(DiffCallback()) {
-
     override fun createView(viewType: Int): Int {
         return R.layout.books_item
     }

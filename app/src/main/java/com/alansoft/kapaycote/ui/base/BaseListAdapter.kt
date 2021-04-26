@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.NO_ID
 
 /**
  * Created by LEE MIN KYU on 2021/04/24
@@ -16,6 +17,11 @@ import androidx.recyclerview.widget.RecyclerView
  */
 abstract class BaseListAdapter<M>(diffCallback: DiffUtil.ItemCallback<M>) :
     ListAdapter<M, BaseViewHolder>(AsyncDifferConfig.Builder<M>(diffCallback).build()) {
+
+    init {
+        setHasStableIds(false)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val resourceId = createView(viewType)
         return BaseViewHolder(parent, resourceId)
@@ -37,6 +43,14 @@ abstract class BaseListAdapter<M>(diffCallback: DiffUtil.ItemCallback<M>) :
     }
 
     protected abstract fun bind(binding: ViewDataBinding, position: Int)
+
+    override fun getItemId(position: Int): Long {
+        return if (!currentList.isNullOrEmpty() && currentList.size > position) {
+            getItem(position).hashCode().toLong()
+        } else {
+            NO_ID
+        }
+    }
 }
 
 class BaseViewHolder(parent: ViewGroup, @LayoutRes layout: Int) : RecyclerView.ViewHolder(

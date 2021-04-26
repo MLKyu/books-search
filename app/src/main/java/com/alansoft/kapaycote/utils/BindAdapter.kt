@@ -1,6 +1,7 @@
 package com.alansoft.kapaycote.utils
 
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
 
 /**
@@ -11,4 +12,9 @@ import androidx.databinding.BindingAdapter
 @BindingAdapter("loadImg")
 fun laodImg(view: ImageView, url: String) {
     view.loadWithThumbnail(url)
+}
+
+@BindingAdapter("selected")
+fun selected(view: AppCompatImageView, selected: Boolean) {
+    view.isSelected = selected
 }

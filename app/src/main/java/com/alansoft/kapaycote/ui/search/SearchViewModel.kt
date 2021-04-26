@@ -1,5 +1,6 @@
 package com.alansoft.kapaycote.ui.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -56,10 +57,5 @@ class SearchViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    interface Delegate {
-        fun querySubmitted(query: String)
-        fun queryChanged(text: String)
     }
 }

@@ -62,7 +62,7 @@ data class Document(
         }
     }
 
-    fun setPostion(postion: Int): Document {
+    fun setPostion(position: Int): Document {
         return this.apply {
             this.position = position
         }
