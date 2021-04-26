@@ -15,11 +15,7 @@ class SearchRemoteDataSource @Inject constructor(private val searchApi: SearchAp
         sort: SearchSortType,
         page: Int,
         size: Int
-//        ,
-//        target: String
     ) = searchApi.getSearchBook(
         query, sort, page, size
-//        , target
     )
-
 }

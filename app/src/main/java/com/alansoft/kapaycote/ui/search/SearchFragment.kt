@@ -17,6 +17,10 @@ import com.alansoft.kapaycote.ui.base.BaseFragment
 import com.alansoft.kapaycote.utils.getNavigationResult
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Created by LEE MIN KYU on 2021/04/20
+ * Copyright © 2021 Dreamus Company. All rights reserved.
+ */
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<SearchFragmentBinding>() {
 

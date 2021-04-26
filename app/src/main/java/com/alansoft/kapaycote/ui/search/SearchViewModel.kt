@@ -15,6 +15,10 @@ import kotlinx.coroutines.flow.flatMapLatest
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Created by LEE MIN KYU on 2021/04/20
+ * Copyright © 2021 Dreamus Company. All rights reserved.
+ */
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val repository: SearchRepository
