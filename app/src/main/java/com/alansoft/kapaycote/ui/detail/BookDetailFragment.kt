@@ -26,16 +26,6 @@ class BookDetailFragment : BaseFragment<BookDetailFragmentBinding>() {
     override fun getLayoutId(): Int = R.layout.book_detail_fragment
     private var like = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.book_detail_fragment, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        return binding.root
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.detail_menu_item, menu)
         setSearchView(menu)
