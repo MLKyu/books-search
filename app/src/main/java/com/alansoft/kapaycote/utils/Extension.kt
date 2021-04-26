@@ -1,7 +1,10 @@
 package com.alansoft.kapaycote.utils
 
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import com.alansoft.kapaycote.ui.search.SearchViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -37,4 +40,8 @@ fun ImageView.loadWithThumbnail(uri: String?, sizeMultiplier: Float = 0.25f) {
         .thumbnail(sizeMultiplier)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(this)
+}
+
+fun Fragment.toast(@StringRes message: Int) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }

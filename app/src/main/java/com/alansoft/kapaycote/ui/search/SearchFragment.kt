@@ -45,15 +45,14 @@ class SearchFragment : Fragment() {
         viewModel.results.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Result.Loading -> {
-                    // Set refreshing state
-//                    binding.swipeRefreshLayout.isRefreshing = true
+                    binding.progressBar.visibility = View.VISIBLE
                 }
                 is Result.Success -> {
                     showImagesRecyclerView(result.data)
                 }
                 is Result.Empty -> {
-//                    val message = getString(R.string.no_image_show)
-//                    showEmptyView(message)
+//                    val message = result
+//                    showEmptyView(message
                 }
                 is Result.Error -> {
 //                    val message = if (result.isNetworkError) {
@@ -82,11 +81,28 @@ class SearchFragment : Fragment() {
 //            swipeRefreshLayout.isRefreshing = false
 //            imagesRecyclerView.visibility = View.VISIBLE
 //            noDataGroup.visibility = View.GONE
+            progressBar.visibility = View.GONE
         }
 
-        // Submit the list of images
         adapter.submitList(data.documents)
     }
+
+    private fun showEmptyView(message: String) {
+        with(binding) {
+            // Stop refreshing state
+//            swipeRefreshLayout.isRefreshing = false
+//
+//            imagesRecyclerView.visibility = View.INVISIBLE
+//            noDataGroup.visibility = View.VISIBLE
+//
+//            noDataText.text = message
+
+            progressBar.visibility = View.GONE
+        }
+
+        adapter.submitList(emptyList())
+    }
+
 
     private fun setToolbar() {
 //        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)

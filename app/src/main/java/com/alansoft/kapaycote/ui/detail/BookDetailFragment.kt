@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.alansoft.kapaycote.R
+import com.alansoft.kapaycote.data.response.Document
 import com.alansoft.kapaycote.databinding.BookDetailFragmentBinding
+import com.alansoft.kapaycote.utils.loadWithThumbnail
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -34,7 +36,20 @@ class BookDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindView(args.document)
+    }
 
-        args.document
+    private fun bindView(document: Document) {
+        with(binding) {
+            bookImg.loadWithThumbnail(document.thumbnail)
+            bookDate.text = document.datetime
+            bookDes.text = document.contents
+            bookName.text = document.title
+            bookPrice.text = document.salePrice.toString()
+            bookPublisher.text = document.publisher
+            //            binding.bookLike
+
+            progressBar.visibility = View.GONE
+        }
     }
 }

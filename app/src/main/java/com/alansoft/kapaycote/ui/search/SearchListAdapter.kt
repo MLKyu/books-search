@@ -27,6 +27,11 @@ class SearchListAdapter(
     override fun bind(binding: ViewDataBinding, item: Document) {
         if (binding is BooksItemBinding) {
             binding.bookImg.loadWithThumbnail(item.thumbnail)
+            binding.bookDate.text = item.datetime
+            binding.bookDes.text = item.contents
+            binding.bookName.text = item.title
+            binding.bookPrice.text = item.salePrice.toString()
+//            binding.bookLike
         }
 
         binding.root.setOnClickListener {
