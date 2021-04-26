@@ -1,5 +1,6 @@
 package com.alansoft.kapaycote.di
 
+import com.alansoft.kapaycote.data.SearchCacheDataSource
 import com.alansoft.kapaycote.data.SearchRemoteDataSource
 import com.alansoft.kapaycote.data.api.SearchApi
 import com.alansoft.kapaycote.repository.SearchRepository
@@ -24,7 +25,8 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideSearchRepository(
-        searchRemoteDataSource: SearchRemoteDataSource
+        cache: SearchCacheDataSource,
+        remote: SearchRemoteDataSource
     ) =
-        SearchRepository(searchRemoteDataSource)
+        SearchRepository(cache, remote)
 }

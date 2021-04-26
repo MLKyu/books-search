@@ -22,5 +22,9 @@ sealed class Result<out T> {
         fun <T> successOrEmpty(list: List<T>): Result<List<T>> {
             return if (list.isEmpty()) Empty else Success(list)
         }
+
+        fun <T, R> pushAndSuccess(data: T, block: (data: T) -> R): Result<R> {
+            return Success(block(data))
+        }
     }
 }

@@ -8,9 +8,23 @@ import kotlinx.android.parcel.Parcelize
 data class BooksSearchResponse(
     val meta: Meta?,
     val documents: List<Document?>?
-)
+) {
+    fun fromData(query: String, page: Int): BooksSearchResponse {
+        return BooksSearchResponse(
+            Meta(
+                query,
+                page,
+                meta?.totalCount ?: -1,
+                meta?.pageableCount ?: -1,
+                meta?.isEnd ?: false
+            ), documents
+        )
+    }
+}
 
 data class Meta(
+    val query: String,
+    val page: Int,
     @SerializedName("total_count")
     var totalCount: Int,
     @SerializedName("pageable_count")
@@ -18,7 +32,6 @@ data class Meta(
     @SerializedName("is_end")
     var isEnd: Boolean
 )
-
 
 /**
  * title	String	도서 제목

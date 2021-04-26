@@ -7,6 +7,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alansoft.kapaycote.R
 import com.alansoft.kapaycote.data.Result
 import com.alansoft.kapaycote.data.response.BooksSearchResponse
@@ -48,7 +50,7 @@ class SearchFragment : Fragment() {
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 is Result.Success -> {
-                    showImagesRecyclerView(result.data)
+                    showRecyclerView(result.data)
                 }
                 is Result.Empty -> {
 //                    val message = result
@@ -71,11 +73,20 @@ class SearchFragment : Fragment() {
 
     private fun setRecyclerView() {
         binding.recyclerView.apply {
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val lastPosition = layoutManager.findLastVisibleItemPosition()
+                    if (lastPosition == (adapter?.itemCount ?: RecyclerView.NO_POSITION) - 1) {
+                        viewModel.loadNextPage()
+                    }
+                }
+            })
             adapter = this@SearchFragment.adapter
         }
     }
 
-    private fun showImagesRecyclerView(data: BooksSearchResponse) {
+    private fun showRecyclerView(data: BooksSearchResponse) {
         with(binding) {
             // Stop refreshing state
 //            swipeRefreshLayout.isRefreshing = false
@@ -84,7 +95,17 @@ class SearchFragment : Fragment() {
             progressBar.visibility = View.GONE
         }
 
-        adapter.submitList(data.documents)
+        if (data.meta?.page ?: -1 > 1) {
+            val list = ArrayList<Document?>()
+            list.addAll(adapter.currentList)
+            data.documents?.let {
+                list.addAll(it)
+            }
+            adapter.submitList(list)
+        } else {
+            adapter.submitList(data.documents)
+        }
+
     }
 
     private fun showEmptyView(message: String) {
@@ -105,7 +126,6 @@ class SearchFragment : Fragment() {
 
 
     private fun setToolbar() {
-//        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         setHasOptionsMenu(true)
     }
 
@@ -113,7 +133,6 @@ class SearchFragment : Fragment() {
         val searchItem = menu.findItem(R.id.action_search)
         (searchItem.actionView as SearchView).apply {
             queryHint = "책 이름을 입력하세요"
-//                getString(R.string.subreddit)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     viewModel.setQuery(query)
