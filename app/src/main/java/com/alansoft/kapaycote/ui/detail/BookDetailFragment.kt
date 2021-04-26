@@ -11,6 +11,7 @@ import com.alansoft.kapaycote.data.response.Document
 import com.alansoft.kapaycote.databinding.BookDetailFragmentBinding
 import com.alansoft.kapaycote.ui.base.BaseFragment
 import com.alansoft.kapaycote.utils.loadWithThumbnail
+import com.alansoft.kapaycote.utils.setSelector
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -52,20 +53,13 @@ class BookDetailFragment : BaseFragment<BookDetailFragmentBinding>() {
     }
 
     private fun setSearchView(menu: Menu) {
-        val likeItem = menu.findItem(R.id.action_like)
-        if (like) {
-            likeItem.setIcon(R.drawable.ic_like_active)
-        } else {
-            likeItem.setIcon(R.drawable.ic_like_inactive)
-        }
-        likeItem.setOnMenuItemClickListener {
-            like = !like
-            if (like) {
-                it.setIcon(R.drawable.ic_like_active)
-            } else {
-                it.setIcon(R.drawable.ic_like_inactive)
+        menu.findItem(R.id.action_like).run {
+            setSelector(like)
+            setOnMenuItemClickListener {
+                like = !like
+                it.setSelector(like)
+                true
             }
-            true
         }
     }
 
