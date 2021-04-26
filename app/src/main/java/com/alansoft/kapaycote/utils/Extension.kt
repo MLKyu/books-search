@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.alansoft.kapaycote.R
 import com.alansoft.kapaycote.ui.search.SearchViewModel
 import com.bumptech.glide.Glide
@@ -54,4 +55,11 @@ fun MenuItem.setSelector(select: Boolean) {
     } else {
         this.setIcon(R.drawable.ic_like_inactive)
     }
+}
+
+fun <T> Fragment.getNavigationResult(key: String = "result") =
+    findNavController().getBackStackEntry(R.id.searchFragment)?.savedStateHandle?.getLiveData<T>(key)
+
+fun <T> Fragment.setNavigationResult(result: T, key: String = "result") {
+    findNavController().previousBackStackEntry?.savedStateHandle?.set(key, result)
 }

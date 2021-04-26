@@ -65,5 +65,20 @@ data class Document(
     @SerializedName("sale_price")
     val salePrice: Int,
     val thumbnail: String?,
-    val status: String?
-) : Parcelable
+    val status: String?,
+    var like: Boolean = false,
+    var position: Int
+) : Parcelable {
+
+    fun setLike(like: Boolean): Document {
+        return this.apply {
+            this.like = like
+        }
+    }
+
+    fun setPostion(postion: Int): Document {
+        return this.apply {
+            this.position = position
+        }
+    }
+}

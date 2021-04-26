@@ -1,16 +1,19 @@
 package com.alansoft.kapaycote.ui.detail
 
 import android.os.Bundle
-import android.view.*
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.alansoft.kapaycote.R
 import com.alansoft.kapaycote.data.response.Document
 import com.alansoft.kapaycote.databinding.BookDetailFragmentBinding
 import com.alansoft.kapaycote.ui.base.BaseFragment
 import com.alansoft.kapaycote.utils.loadWithThumbnail
+import com.alansoft.kapaycote.utils.setNavigationResult
 import com.alansoft.kapaycote.utils.setSelector
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,15 +24,20 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class BookDetailFragment : BaseFragment<BookDetailFragmentBinding>() {
-    private val viewModel: BookDetailViewModel by viewModels()
     private val args: BookDetailFragmentArgs by navArgs()
 
     override fun getLayoutId(): Int = R.layout.book_detail_fragment
+
     private var like = false
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.detail_menu_item, menu)
-        setSearchView(menu)
+        setLikeView(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        findNavController().navigateUp()
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,6 +47,7 @@ class BookDetailFragment : BaseFragment<BookDetailFragmentBinding>() {
     }
 
     private fun bindView(document: Document) {
+        like = document.like
         with(binding) {
             bookImg.loadWithThumbnail(document.thumbnail)
             bookDate.text = document.datetime
@@ -46,22 +55,20 @@ class BookDetailFragment : BaseFragment<BookDetailFragmentBinding>() {
             bookName.text = document.title
             bookPrice.text = document.salePrice.toString()
             bookPublisher.text = document.publisher
-            //            binding.bookLike
-
             progressBar.visibility = View.GONE
         }
     }
 
-    private fun setSearchView(menu: Menu) {
+    private fun setLikeView(menu: Menu) {
         menu.findItem(R.id.action_like).run {
             setSelector(like)
             setOnMenuItemClickListener {
                 like = !like
                 it.setSelector(like)
+
+                setNavigationResult(args.document.setLike(like))
                 true
             }
         }
     }
-
-
 }

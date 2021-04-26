@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.alansoft.kapaycote.R
 import com.alansoft.kapaycote.databinding.MainActivityBinding
@@ -23,11 +22,10 @@ class MainActivity : AppCompatActivity() {
         val binding: MainActivityBinding = MainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val navHostFragment: NavHostFragment =
-//            supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
-//        val navController: NavController = navHostFragment.navController
-//
-//        binding.toolbar.setupWithNavController(navController)
+        val navHostFragment: NavHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
+        val navController: NavController = navHostFragment.navController
+        binding.toolbar.setupWithNavController(navController)
         setSupportActionBar(binding.toolbar)
 
         getHashKey()

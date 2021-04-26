@@ -13,7 +13,7 @@ import com.alansoft.kapaycote.utils.loadWithThumbnail
  * Copyright © 2021 Dreamus Company. All rights reserved.
  */
 class SearchListAdapter(
-    private val itemCallback: ((Document) -> Unit)?
+    private val itemCallback: ((Pair<Document, Int>) -> Unit)?
 ) : BaseListAdapter<Document>(DiffCallback()) {
 
     override fun createView(viewType: Int): Int {
@@ -24,18 +24,20 @@ class SearchListAdapter(
         return R.layout.books_item.hashCode()
     }
 
-    override fun bind(binding: ViewDataBinding, item: Document) {
+    override fun bind(binding: ViewDataBinding, position: Int) {
         if (binding is BooksItemBinding) {
-            binding.bookImg.loadWithThumbnail(item.thumbnail)
-            binding.bookDate.text = item.datetime
-            binding.bookDes.text = item.contents
-            binding.bookName.text = item.title
-            binding.bookPrice.text = item.salePrice.toString()
-//            binding.bookLike
+            getItem(position).let {
+                binding.bookImg.loadWithThumbnail(it.thumbnail)
+                binding.bookDate.text = it.datetime
+                binding.bookDes.text = it.contents
+                binding.bookName.text = it.title
+                binding.bookPrice.text = it.salePrice.toString()
+                binding.bookLike.isSelected = it.like
+            }
         }
 
         binding.root.setOnClickListener {
-            itemCallback?.invoke(item)
+            itemCallback?.invoke(Pair(getItem(position), position))
         }
     }
 }

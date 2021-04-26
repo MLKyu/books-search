@@ -31,12 +31,12 @@ abstract class BaseListAdapter<M>(diffCallback: DiffUtil.ItemCallback<M>) :
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         DataBindingUtil.bind<ViewDataBinding>(holder.itemView)?.let {
-            bind(it, getItem(position))
+            bind(it, position)
             it.executePendingBindings()
         }
     }
 
-    protected abstract fun bind(binding: ViewDataBinding, item: M)
+    protected abstract fun bind(binding: ViewDataBinding, position: Int)
 }
 
 class BaseViewHolder(parent: ViewGroup, @LayoutRes layout: Int) : RecyclerView.ViewHolder(

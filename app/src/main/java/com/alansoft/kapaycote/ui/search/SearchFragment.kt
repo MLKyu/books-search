@@ -14,6 +14,7 @@ import com.alansoft.kapaycote.data.response.BooksSearchResponse
 import com.alansoft.kapaycote.data.response.Document
 import com.alansoft.kapaycote.databinding.SearchFragmentBinding
 import com.alansoft.kapaycote.ui.base.BaseFragment
+import com.alansoft.kapaycote.utils.getNavigationResult
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,14 +39,14 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>() {
 
     private fun setViewModel() {
         with(binding) {
-            viewmodel = SearchFragment@viewModel
+            viewmodel = SearchFragment@ viewModel
         }
         setSubscribe()
     }
 
     private fun setSubscribe() {
         viewModel.results.observe(viewLifecycleOwner, Observer {
-            when(it) {
+            when (it) {
                 is Result.Loading -> {
                     showProgressBar()
                 }
@@ -69,6 +70,11 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>() {
                 }
             }
         })
+
+        getNavigationResult<Document>().observe(viewLifecycleOwner) { result ->
+            adapter.currentList[result.position].setLike(result.like)
+            adapter.notifyItemChanged(result.position)
+        }
     }
 
 
@@ -135,8 +141,11 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>() {
         }
     }
 
-    private fun onItemClicked(item: Document) {
-        val direction = SearchFragmentDirections.actionListFragmentToDetailFragment(item)
+    private fun onItemClicked(item: Pair<Document, Int>) {
+        val direction =
+            SearchFragmentDirections.actionListFragmentToDetailFragment(item.first.apply {
+                setPostion(item.second)
+            })
         findNavController().navigate(direction)
     }
 
