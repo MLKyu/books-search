@@ -53,7 +53,7 @@ class SearchFragment : Fragment() {
                     showRecyclerView(result.data)
                 }
                 is Result.Empty -> {
-                    showEmptyView("검색 결과가 없습니다.")
+                    showErrorView("검색 결과가 없습니다.")
                 }
                 is Result.Error -> {
                     val message = if (result.isNetworkError) {
@@ -61,7 +61,7 @@ class SearchFragment : Fragment() {
                     } else {
                         result.exception.message
                     }
-                    showEmptyView(message)
+                    showErrorView(message)
                 }
                 else -> {
                     // nothing
@@ -89,7 +89,7 @@ class SearchFragment : Fragment() {
         with(binding) {
             // Stop refreshing state
             recyclerView.visibility = View.VISIBLE
-            noData.visibility = View.GONE
+            errorTv.visibility = View.GONE
             progressBar.visibility = View.GONE
         }
 
@@ -105,10 +105,10 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun showEmptyView(message: String?) {
+    private fun showErrorView(message: String?) {
         with(binding) {
             recyclerView.visibility = View.INVISIBLE
-            noData.text = message
+            errorTv.text = message
 
             progressBar.visibility = View.GONE
         }

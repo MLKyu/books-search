@@ -19,10 +19,6 @@ sealed class Result<out T> {
         fun error(exception: Throwable) = Error(exception)
         fun empty() = Empty
         fun loading() = Loading
-        fun <T> successOrEmpty(list: List<T>): Result<List<T>> {
-            return if (list.isEmpty()) Empty else Success(list)
-        }
-
         fun <T, R> pushAndSuccess(data: T, block: (data: T) -> R): Result<R> {
             return Success(block(data))
         }

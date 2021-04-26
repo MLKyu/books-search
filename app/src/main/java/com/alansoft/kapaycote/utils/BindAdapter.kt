@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide
 fun laodImg(view: ImageView, url: String?) {
     if (url != null) {
         Glide.with(view).load(url).fitCenter()
-//            .error(R.drawable.error)
             .into(view)
     }
 }

@@ -23,18 +23,12 @@ class SearchViewModel @Inject constructor(
     private val query = MutableStateFlow(Pair("", FIRST_PAGE))
     val _results: MutableLiveData<Result<BooksSearchResponse>> =
         query
-            // Discard text typed in a very short time to avoid many network calls
-//            .debounce(DEBOUNCE_MILLIS)
-            // Filter empty text to avoid unnecessary network call
             .filter {
                 it.first.isNotEmpty()
             }
-            // When a new text is set, transform it in Result<RedditImages> by triggering a
-            // network call
             .flatMapLatest {
                 repository.getSearchBooks(it.first, it.second)
             }
-            // Create a LiveData from Flow
             .asLiveData() as MutableLiveData
     val results: LiveData<Result<BooksSearchResponse>> = _results
 
@@ -43,7 +37,6 @@ class SearchViewModel @Inject constructor(
         if (input == query.value.first) {
             return
         }
-//        nextPageHandler.reset()
         if (input.isNotBlank()) {
             query.value = input to FIRST_PAGE
         }

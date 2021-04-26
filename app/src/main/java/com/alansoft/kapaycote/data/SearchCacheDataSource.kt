@@ -9,7 +9,6 @@ class SearchCacheDataSource
 
     private val cached: LinkedList<Data> = LinkedList()
 
-    //    override
     fun pushQueryResponse(query: String, page: Int, queryResponse: BooksSearchResponse) {
         if (this.cached.size >= 5) {
             this.cached.removeFirst()
@@ -17,12 +16,10 @@ class SearchCacheDataSource
         cached.addLast(Data(query, page, queryResponse))
     }
 
-    //    override
     fun getQueryResponse(query: String, page: Int): BooksSearchResponse {
         return cached.first { it.query == query && it.page == page }.queryResponse
     }
 
-    //    override
     fun isExistAndFresh(query: String, page: Int): Boolean {
         val index = isExist(query, page)
         if (index == -1) {
