@@ -24,6 +24,11 @@ object RepositoryModule {
 
     @Singleton
     @Provides
+    fun provideSearchCacheDataSource() =
+        SearchCacheDataSource()
+
+    @Singleton
+    @Provides
     fun provideSearchRepository(
         cache: SearchCacheDataSource,
         remote: SearchRemoteDataSource

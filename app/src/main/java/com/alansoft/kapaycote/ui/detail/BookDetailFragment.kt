@@ -55,10 +55,10 @@ class BookDetailFragment : BaseFragment<BookDetailFragmentBinding>() {
     private fun setLikeView(menu: Menu) {
         menu.findItem(R.id.action_like).run {
             setSelector(like)
+            setNavigationResult(args.document.setLike(like))
             setOnMenuItemClickListener {
                 like = !like
                 it.setSelector(like)
-
                 setNavigationResult(args.document.setLike(like))
                 true
             }

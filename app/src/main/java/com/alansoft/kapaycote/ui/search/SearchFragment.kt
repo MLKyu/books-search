@@ -68,15 +68,17 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>() {
         })
 
         getNavigationResult<Document>(R.id.searchFragment).observe(viewLifecycleOwner) { result ->
-            adapter.currentList[result.position].setLike(result.like)
-            adapter.notifyItemChanged(result.position)
+            val notify = adapter.currentList[result.position].like != result.like
+            if (notify) {
+                adapter.currentList[result.position].setLike(result.like)
+                adapter.notifyItemChanged(result.position)
+            }
         }
     }
 
 
     private fun setRecyclerAdapter() {
         binding.recyclerView.run {
-            setItemViewCacheSize(0)
             setHasFixedSize(true)
             clearOnScrollListeners()
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -93,16 +95,14 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>() {
     }
 
     private fun setResultData(data: BooksSearchResponse) {
+        val list: MutableList<Document?> = ArrayList()
         if (data.meta?.page ?: -1 > 1) {
-            val list = ArrayList<Document?>()
             list.addAll(adapter.currentList)
-            data.documents?.let {
-                list.addAll(it)
-            }
-            adapter.submitList(list)
-        } else {
-            adapter.submitList(data.documents)
         }
+        data.documents?.let {
+            list.addAll(it)
+        }
+        adapter.submitList(list)
     }
 
     private fun showRecyclerView() {
