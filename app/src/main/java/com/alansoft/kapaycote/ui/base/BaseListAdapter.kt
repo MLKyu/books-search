@@ -19,7 +19,7 @@ abstract class BaseListAdapter<M>(diffCallback: DiffUtil.ItemCallback<M>) :
     ListAdapter<M, BaseViewHolder>(AsyncDifferConfig.Builder<M>(diffCallback).build()) {
 
     init {
-        setHasStableIds(false)
+        setHasStableIds(true)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {

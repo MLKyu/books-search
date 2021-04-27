@@ -14,14 +14,14 @@ class SearchCacheDataSource
     private val cached: LinkedList<Data> = LinkedList()
 
     fun pushSearchResponse(query: String, page: Int, queryResponse: BooksSearchResponse) {
-        if (cached.size >= 5) {
+        if (cached.size >= 1) {
             cached.removeFirst()
         }
         cached.addLast(Data(query, page, queryResponse))
     }
 
     fun getSearchResponse(query: String, page: Int): BooksSearchResponse {
-        return cached.first { it.query == query && it.page == page }.queryResponse
+        return cached.first { it.query == query && it.page == page }.queryResponse.copy()
     }
 
     fun isExistAndFresh(query: String, page: Int): Boolean {
