@@ -1,4 +1,4 @@
-package com.alansoft.kapay_cote
+package com.alansoft.kapaycote
 
 import org.junit.Test
 
