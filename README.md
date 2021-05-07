@@ -1,4 +1,4 @@
-# kabank-cote
+# books-search
 This is a coding test project with most of the Activity 1, Fragment 2, Asyc flow, Share Like, Data Cache it was built for submission
 
 ## Built with
